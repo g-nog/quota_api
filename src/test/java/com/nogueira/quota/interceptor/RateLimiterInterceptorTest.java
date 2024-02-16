@@ -47,7 +47,7 @@ class RateLimiterInterceptorTest {
 
     @Test
     void preHandle_withQuotaAnnotationPresent_returnsTrue() throws Exception {
-        // Arrange
+
         HandlerMethod handler = mock(HandlerMethod.class);
         RateLimited rateLimited = mock(RateLimited.class);
         UsersQuota usersQuota = mock(UsersQuota.class);
@@ -66,7 +66,7 @@ class RateLimiterInterceptorTest {
 
     @Test
     void preHandle_withoutQuotaAnnotationPresent_returnsTrue() throws Exception {
-        // Arrange
+
         HandlerMethod handler = mock(HandlerMethod.class);
         when(handler.getMethodAnnotation(RateLimited.class)).thenReturn(null);
 
@@ -77,7 +77,7 @@ class RateLimiterInterceptorTest {
 
     @Test
     void preHandle_withMissingUserId_returnsFalse() throws Exception {
-        // Arrange
+
         HandlerMethod handler = mock(HandlerMethod.class);
         RateLimited rateLimited = mock(RateLimited.class);
         when(handler.getMethodAnnotation(RateLimited.class)).thenReturn(rateLimited);
@@ -89,7 +89,7 @@ class RateLimiterInterceptorTest {
 
     @Test
     void preHandle_withInvalidUserId_returnsFalse() throws Exception {
-        // Arrange
+
         HandlerMethod handler = mock(HandlerMethod.class);
         RateLimited rateLimited = mock(RateLimited.class);
         when(handler.getMethodAnnotation(RateLimited.class)).thenReturn(rateLimited);
@@ -102,7 +102,7 @@ class RateLimiterInterceptorTest {
 
     @Test
     void preHandle_withNonExistentUser_returnsFalse() throws Exception {
-        // Arrange
+
         HandlerMethod handler = mock(HandlerMethod.class);
         RateLimited rateLimited = mock(RateLimited.class);
         when(handler.getMethodAnnotation(RateLimited.class)).thenReturn(rateLimited);
@@ -116,7 +116,7 @@ class RateLimiterInterceptorTest {
 
     @Test
     void preHandle_withExceededQuota_returnsFalse() throws Exception {
-        // Arrange
+
         HandlerMethod handler = mock(HandlerMethod.class);
         RateLimited rateLimited = mock(RateLimited.class);
         when(handler.getMethodAnnotation(RateLimited.class)).thenReturn(rateLimited);
