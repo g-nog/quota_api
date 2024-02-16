@@ -23,8 +23,10 @@ public class QuotaController {
 
     @PostMapping("/users/{userId}")
     @UserIdQuota
-    public ResponseEntity<Object> consumeQuota(@PathVariable String userId) {
+    public ResponseEntity<Object> consumeQuota(@PathVariable Long userId) {
         return new ResponseEntity<>("quota_set", HttpStatus.OK);
+
+
     }
 
     @GetMapping("/users")

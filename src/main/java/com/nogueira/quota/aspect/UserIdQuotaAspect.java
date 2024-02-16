@@ -1,6 +1,6 @@
 package com.nogueira.quota.aspect;
 
-import com.nogueira.quota.errors.QuotaExceededException;
+import com.nogueira.quota.exceptions.QuotaExceededException;
 import com.nogueira.quota.repositories.QuotaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.ProceedingJoinPoint;
