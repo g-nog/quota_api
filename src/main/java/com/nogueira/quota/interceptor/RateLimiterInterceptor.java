@@ -15,6 +15,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Component
@@ -47,6 +48,24 @@ public class RateLimiterInterceptor implements HandlerInterceptor {
         Map<String, String> pathVariables = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         String userId = pathVariables.get("userId");
 
+        if (!isUserIdValid(userId, response)) {
+            return false;
+        }
+
+        var userIdLong = Long.parseLong(userId);
+        LOGGER.info("checking quota for user [ {} ].", userId);
+
+        if (!isUserQuotaExceeded(userIdLong, response)) {
+            return false;
+        }
+
+        String leftQuotas = String.valueOf(quotaTokenBucket.getUsersQuotas().get(userIdLong));
+        LOGGER.info("left quotas for user [ {} ] -> {}.", userId, leftQuotas);
+
+        return true;
+    }
+
+    private boolean isUserIdValid(String userId, HttpServletResponse response) throws IOException {
         if (!StringUtils.hasText(userId)) {
             response.sendError(HttpStatus.BAD_REQUEST.value(),
                     "Missing path variable userId");
@@ -54,7 +73,6 @@ public class RateLimiterInterceptor implements HandlerInterceptor {
         }
         try {
             var userIdLong = Long.parseLong(userId);
-            LOGGER.info("checking quota for user [ {} ].", userId);
 
             if (userService.getUserById(userIdLong) == null) {
                 LOGGER.error("user [ {} ] not found.", userId);
@@ -63,18 +81,20 @@ public class RateLimiterInterceptor implements HandlerInterceptor {
                 return false;
             }
 
-            if (!quotaTokenBucket.checkQuota(userIdLong)) {
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "quota_exceeded");
-                return false;
-            }
-
-            String leftQuotas = String.valueOf(quotaTokenBucket.getUsersQuotas().get(userIdLong));
-            LOGGER.info("left quotas for user [ {} ] -> {}.", userId, leftQuotas);
         } catch (NumberFormatException e) {
             LOGGER.error("Invalid userId: {}", userId);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.sendError(HttpStatus.BAD_REQUEST.value(), "invalid_user_id");
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isUserQuotaExceeded(Long userId, HttpServletResponse response) throws IOException {
+        if (!quotaTokenBucket.checkQuota(userId)) {
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "quota_exceeded");
             return false;
         }
         return true;
