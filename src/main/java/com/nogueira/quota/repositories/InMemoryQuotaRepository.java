@@ -8,13 +8,11 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class InMemoryQuotaRepository extends ConcurrentHashMap<Long, InMemoryQuotaRepository.TokenBucket> implements QuotaRepository {
-
     private final int defaultQuotaValue = 5;
 
     public InMemoryQuotaRepository() {
         super();
     }
-
 
     @Override
     public boolean checkQuota(Long userId) {

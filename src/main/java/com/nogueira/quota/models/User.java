@@ -8,12 +8,23 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User {
 
+    public User(Long id, String firstName, String lastName, LocalDateTime lastLoginTimeUtc) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.lastLoginTimeUtc = lastLoginTimeUtc;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String firstName;
     private String lastName;
     private LocalDateTime lastLoginTimeUtc;
+
+    public User() {
+
+    }
 
     public String getFirstName() {
         return firstName;
