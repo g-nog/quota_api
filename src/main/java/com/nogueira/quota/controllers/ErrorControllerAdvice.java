@@ -1,6 +1,5 @@
 package com.nogueira.quota.controllers;
 
-import com.nogueira.quota.exceptions.QuotaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,14 +29,6 @@ public class ErrorControllerAdvice {
                 .body(e.getMessage());
     }
 
-    @ExceptionHandler(QuotaException.class)
-    public ResponseEntity<String> handle(QuotaException e) {
-        LOGGER.error("QuotaError", e);
-        return ResponseEntity
-                .status(e.getErrorCode())
-                .body(e.getMessage());
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handle(Exception e) {
         LOGGER.error("unknown exception", e);
@@ -53,6 +44,4 @@ public class ErrorControllerAdvice {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("ops");
     }
-
-
 }
