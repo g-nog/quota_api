@@ -1,7 +1,4 @@
-# Your Application Name
-
-This is a brief description of your application. It's a Spring Boot application that uses Elasticsearch for data storage
-and retrieval.
+# QUOTA API
 
 ## Prerequisites
 
