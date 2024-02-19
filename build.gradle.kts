@@ -17,14 +17,13 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    runtimeOnly("com.h2database:h2") // H2 database dependency
-//	// https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-//	compileOnly("javax.servlet:javax.servlet-api:4.0.1")
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop
-    implementation("org.springframework.boot:spring-boot-starter-aop:3.2.2")
+    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch:3.2.2")
+    // https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client
+    implementation("org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.18")
 
 }
 
